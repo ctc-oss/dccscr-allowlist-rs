@@ -6,8 +6,7 @@ const REPODIR: &str = "/tmp/dccscr";
 pub fn latest(url: &str) -> Result<(String, String), String> {
     if !Path::new(REPODIR).join(".git").exists() {
         clone(url)
-    }
-    else {
+    } else {
         pull()
     }
 }
@@ -18,7 +17,7 @@ fn clone(url: &str) -> Result<(String, String), String> {
         Ok(r) => {
             let sha = r.revparse_single("HEAD").unwrap().id().to_string();
             Ok((String::from(REPODIR), sha))
-        },
+        }
         Err(e) => Err(format!("failed to clone: {}", e)),
     }
 }
@@ -29,7 +28,7 @@ fn pull() -> Result<(String, String), String> {
         Ok(r) => {
             let sha = r.revparse_single("HEAD").unwrap().id().to_string();
             Ok((String::from(REPODIR), sha))
-        },
+        }
         Err(e) => Err(format!("failed to pull: {}", e)),
     }
 }
@@ -42,7 +41,7 @@ mod tests {
     fn it_works() {
         match latest("https://repo1.dso.mil/dsop/dccscr-whitelists") {
             Ok((path, sha)) => println!("{}", sha),
-            Err(e) => println!("error: {}", e)
+            Err(e) => println!("error: {}", e),
         }
     }
 }
