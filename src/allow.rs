@@ -1,12 +1,9 @@
 use std::fs::File;
 use std::io::BufReader;
-use std::path::Path;
 
 use glob::glob;
-use serde_json::from_reader;
 
 use serde::Deserialize;
-use std::collections::HashMap;
 
 #[derive(Deserialize, Debug)]
 struct Greylist {
@@ -56,7 +53,7 @@ pub fn greylisted(name: &str, repo: &str) -> Result<Vec<Allowed>, String> {
             let reader = BufReader::new(file);
             let r: serde_json::error::Result<Greylist> = serde_json::from_reader(reader);
             match r {
-                Ok(mut gl) => match gl.image_parent() {
+                Ok(gl) => match gl.image_parent() {
                     Some(p) => {
                         let mut x = vec![];
                         x.append(&mut greylisted(&p, repo).unwrap());
